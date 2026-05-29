@@ -1,7 +1,9 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore — react-simple-maps has no types for React 19
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps'
-
+ 
 const GEO_URL = '/countries-110m.json'
-
+ 
 // Hex values used directly — SVG fill doesn't always inherit CSS vars via inline style
 const C = {
   paper:    '#F5F1EA',
@@ -9,12 +11,12 @@ const C = {
   mapBase:  '#D9D2C5',
   mapHover: '#C4B89E',
 } as const
-
+ 
 interface WorldMapProps {
   selectedId: string | null
   onSelect: (id: string) => void
 }
-
+ 
 export default function WorldMap({ selectedId, onSelect }: WorldMapProps) {
   return (
     <div style={{ width: '100%', height: '100vh', background: C.paper, overflow: 'hidden', touchAction: 'none' }}>
@@ -30,7 +32,7 @@ export default function WorldMap({ selectedId, onSelect }: WorldMapProps) {
                 const id = String(geo.id)
                 const isSelected = selectedId === id
                 const isDimmed = selectedId !== null && !isSelected
-
+ 
                 return (
                   <Geography
                     key={geo.rsmKey}
@@ -73,3 +75,4 @@ export default function WorldMap({ selectedId, onSelect }: WorldMapProps) {
     </div>
   )
 }
+ 
