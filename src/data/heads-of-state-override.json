@@ -1,0 +1,7 @@
+{
+  "Q241": { "preferState": true, "reason": "Estado de partido único — PCC, líder real es jefe de Estado (Presidente de Cuba)" },
+  "Q148": { "preferState": true, "reason": "RPC — Secretario General PCC y Presidente concentran poder ejecutivo; P122 no captura esto de forma fiable" },
+  "Q423": { "preferState": true, "reason": "RPDC — el líder supremo ostenta la jefatura de Estado; P6 puede estar vacío o apuntar a un cargo ceremonial" },
+  "Q881": { "preferState": true, "reason": "Vietnam — el Secretario General del PCV / Presidente es el líder real; P122 solo indica 'Estado unitario'" },
+  "Q819": { "preferState": true, "reason": "Laos — estado de partido único PPRL; el Presidente es el líder real aunque P122 no lo refleje" }
+}

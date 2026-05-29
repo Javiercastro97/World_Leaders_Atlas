@@ -1,0 +1,314 @@
+@import "tailwindcss";
+
+:root {
+  /* ── Papel ──────────────────────────────────────────────────────────────── */
+  --paper:   #F5F1EA;
+  --paper-2: #EFE9DD;   /* fondo secundario: skeletons, fondos de sección */
+
+  /* ── Tintas (4 niveles) ──────────────────────────────────────────────────── */
+  --ink:   #1A1A1A;
+  --ink-2: #3C3936;
+  --ink-3: #6B6660;
+  --ink-4: #9E9890;
+
+  /* Aliases de compatibilidad — usados en todos los componentes existentes */
+  --ink-soft: #4A4A4A;
+  --mute:     #8A8278;
+
+  /* ── Cromática ──────────────────────────────────────────────────────────── */
+  --map-base:  #D9D2C5;
+  --map-hover: #C4B89E;
+  --rule:      #E5DFD3;
+  --accent:    #B8472E;
+
+  /* ── Tipografía ─────────────────────────────────────────────────────────── */
+  --font-editorial:        'Source Serif 4', 'Source Serif Pro', Georgia, serif;
+  --font-editorial-legacy: 'Fraunces', Georgia, serif;   /* reservado para comparación */
+  --font-ui:               'Inter', system-ui, sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background: radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.6), transparent 60%),
+              var(--paper);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Grano de papel — pseudo-elemento fijo sobre el fondo, debajo de la UI */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='4'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.09  0 0 0 0 0.08  0 0 0 0.18 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  mix-blend-mode: multiply;
+  opacity: 0.45;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Numerales tabulares globales para cifras */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.masthead {
+  padding: 22px 32px;
+}
+
+/* ── Skeleton shimmer ────────────────────────────────────────────────────── */
+
+@keyframes shimmer {
+  from { background-position: 200% center; }
+  to   { background-position: -200% center; }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--paper-2) 25%,
+    rgba(255, 255, 255, 0.55) 50%,
+    var(--paper-2) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shimmer { animation: none !important; background: var(--paper-2) !important; }
+}
+
+/* ── Foco accesible: reemplaza outline azul del navegador ────────────────── */
+
+:focus-visible {
+  outline: 1.5px solid var(--ink);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* SearchBar: underline animado ya es el indicador — sin outline duplicado */
+#atlas-search:focus-visible {
+  outline: none;
+}
+
+/* ── Panel: sombra + animaciones de entrada ──────────────────────────────── */
+
+.panel-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 420px;
+  height: 100vh;
+  background: var(--paper);
+  border-left: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  overflow-y: auto;
+  box-shadow: -4px 0 24px rgba(26,26,26,0.08), inset 0 1px 0 rgba(255,255,255,0.5);
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--rule);
+  flex-shrink: 0;
+}
+
+.panel-country-name {
+  font-family: var(--font-editorial);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--ink);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.panel-close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: var(--mute);
+  font-family: var(--font-ui);
+  font-size: 20px;
+  line-height: 1;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.panel-content {
+  padding: 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.panel-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--rule);
+  flex-shrink: 0;
+}
+
+@keyframes panelStep {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.p-block {
+  animation: panelStep 600ms cubic-bezier(0.25, 0.1, 0.25, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .p-block {
+    animation: none !important;
+  }
+}
+
+/* ── SearchBar ──────────────────────────────────────────────────────────── */
+
+.sb-input-row {
+  position: relative;
+  border-bottom: 1px solid var(--ink);
+}
+
+.sb-input-row::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 100%;
+  height: 1px;
+  background: var(--accent);
+  transition: right 280ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.sb-input-row.is-focused::after {
+  right: 0;
+}
+
+#atlas-search {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+#atlas-search::placeholder {
+  color: var(--ink-4);
+  opacity: 1;
+}
+
+#atlas-search::-webkit-search-cancel-button,
+#atlas-search::-webkit-search-decoration {
+  display: none;
+}
+
+@keyframes searchFadeIn {
+  from { opacity: 0; transform: translateY(-2px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.sb-result-item {
+  animation: searchFadeIn 220ms cubic-bezier(0.25, 0.1, 0.25, 1) both;
+}
+
+/* ── Bar chart labels ───────────────────────────────────────────────────── */
+
+@keyframes barLabelIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.bar-label {
+  animation: barLabelIn 300ms ease-out 700ms both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar-label { animation: none !important; }
+}
+
+/* ── F1/F3a: Responsive móvil (≤720px) ──────────────────────────────────── */
+
+@media (max-width: 720px) {
+
+  /* Masthead — padding reducido en móvil */
+  .masthead {
+    padding: 14px 16px;
+  }
+
+  /* SearchBar — full width con márgenes laterales */
+  [role="search"] {
+    top: 90px !important;
+    left: 16px !important;
+    right: 16px !important;
+    width: auto !important;
+  }
+
+  /* Panel — bottom sheet. Transform controlado desde JS (snap state). */
+  .panel-overlay {
+    width: 100%;
+    height: 90vh;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-left: none;
+    border-top: 1px solid var(--rule);
+    border-radius: 8px 8px 0 0;
+    box-shadow: 0 -8px 24px -12px rgba(26,26,26,0.18);
+    overflow-x: hidden;
+    transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+  }
+
+  /* Panel — padding interno reducido */
+  .panel-header {
+    padding: 16px 22px;
+  }
+
+  .panel-content {
+    padding: 20px 22px 28px;
+    overflow-wrap: break-word;
+  }
+
+  /* F2 — Footer: padding lateral alineado con el content */
+  .panel-footer {
+    padding: 14px 22px;
+  }
+
+  /* F2 — Nombre del país: tamaño reducido para pantalla pequeña */
+  .panel-country-name {
+    font-size: 19px;
+  }
+
+  /* F2 — Botón X: hit area 44×44px (Apple HIG) */
+  .panel-close-btn {
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+}
+
+@media (max-width: 720px) and (prefers-reduced-motion: reduce) {
+  .panel-overlay {
+    transition: none !important;
+  }
+}
