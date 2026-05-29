@@ -4,11 +4,11 @@ import {
 } from 'recharts'
 import type { ElectionParty, ElectionTypeToShow } from '../types/atlas'
 import { OTROS_COLOR } from '../hooks/useWikidataElection'
- 
+
 // ── Types ─────────────────────────────────────────────────────────────────────
- 
+
 type Metric = 'pct' | 'seats' | 'votes'
- 
+
 interface ChartEntry {
   name: string
   value: number
@@ -18,9 +18,9 @@ interface ChartEntry {
   seats: number | null
   candidate: string | null
 }
- 
+
 // ── Metric determination (exported for CountryPanel's null-check) ─────────────
- 
+
 export function getPrimaryMetric(parties: ElectionParty[]): Metric | null {
   const n = parties.length
   if (!n) return null
@@ -32,9 +32,9 @@ export function getPrimaryMetric(parties: ElectionParty[]): Metric | null {
   if (votesN / n >= 0.8) return 'votes'
   return null
 }
- 
+
 // ── Luminance ─────────────────────────────────────────────────────────────────
- 
+
 function getLuminance(hex: string): number {
   const h = hex.replace('#', '')
   if (h.length !== 6) return 1
@@ -43,36 +43,36 @@ function getLuminance(hex: string): number {
   const b = parseInt(h.slice(4, 6), 16)
   return (0.299 * r + 0.587 * g + 0.114 * b) / 255
 }
- 
+
 // ── Number formatting ─────────────────────────────────────────────────────────
- 
+
 function fmtPct(n: number): string {
   const s = n.toLocaleString('es-ES', { minimumFractionDigits: 0, maximumFractionDigits: 2 })
   return `${s} %`
 }
- 
+
 function fmtVotes(n: number): string {
   return n.toLocaleString('es-ES')
 }
- 
+
 function formatLabel(value: number, metric: Metric): string {
   if (metric === 'pct')   return fmtPct(value)
   if (metric === 'seats') return String(value)
   return fmtVotes(value)
 }
- 
+
 function unitLabel(metric: Metric): string {
   if (metric === 'pct')   return '%'
   if (metric === 'seats') return 'esc.'
   return 'votos'
 }
- 
+
 function trunc(s: string, max: number): string {
   return s.length > max ? s.slice(0, max - 1) + '…' : s
 }
- 
+
 // ── Custom Y-axis tick ────────────────────────────────────────────────────────
- 
+
 function YAxisTick(props: {
   x: number; y: number
   payload: { value: string }
@@ -82,7 +82,7 @@ function YAxisTick(props: {
   const { x, y, payload, entries, isPresidential } = props
   const entry = entries.find(e => e.name === payload.value)
   const showCandidate = isPresidential && !!entry?.candidate
- 
+
   if (showCandidate) {
     return (
       <g transform={`translate(${x},${y})`}>
@@ -97,7 +97,7 @@ function YAxisTick(props: {
       </g>
     )
   }
- 
+
   return (
     <g transform={`translate(${x},${y})`}>
       <text x={0} y={4} textAnchor="end" fill="var(--ink-2)"
@@ -107,9 +107,9 @@ function YAxisTick(props: {
     </g>
   )
 }
- 
+
 // ── Tooltip ───────────────────────────────────────────────────────────────────
- 
+
 function CustomTooltip({ active, payload, isPresidential }: {
   active?: boolean
   payload?: Array<{ payload: ChartEntry }>
@@ -121,11 +121,11 @@ function CustomTooltip({ active, payload, isPresidential }: {
   if (e.votes !== null) parts.push(`${fmtVotes(e.votes)} votos`)
   if (e.pct   !== null) parts.push(fmtPct(e.pct))
   if (e.seats !== null) parts.push(`${e.seats} escaños`)
- 
+
   // Presidential: "Candidate · Party" in title (existing behaviour for Brazil, France…)
   // Legislative/general: party name as title; leader shown as a subtle third line
   const title = (isPresidential && e.candidate) ? `${e.candidate} · ${e.name}` : e.name
- 
+
   return (
     <div style={{
       background: 'var(--ink)',
@@ -147,33 +147,33 @@ function CustomTooltip({ active, payload, isPresidential }: {
     </div>
   )
 }
- 
+
 // ── Main component ────────────────────────────────────────────────────────────
- 
+
 interface Props {
   parties: ElectionParty[]
   electionType: ElectionTypeToShow
   turnout?: number | null
   wikipediaUrl?: string | null
 }
- 
+
 export default function ElectionChart({ parties: inputParties, electionType, turnout, wikipediaUrl }: Props) {
   const metric = getPrimaryMetric(inputParties)
   if (!metric) return null
- 
+
   const isPresidential = electionType === 'presidential'
- 
+
   const getValue = (p: ElectionParty): number => {
     if (metric === 'pct')   return p.pct   ?? 0
     if (metric === 'seats') return p.seats ?? 0
     return p.votes ?? 0
   }
- 
+
   const sorted = [...inputParties].sort((a, b) => getValue(b) - getValue(a))
- 
+
   const top  = sorted.slice(0, 8)
   const rest = sorted.slice(8)
- 
+
   const chartData: ChartEntry[] = top.map(p => ({
     name:      p.name,
     value:     getValue(p),
@@ -183,7 +183,7 @@ export default function ElectionChart({ parties: inputParties, electionType, tur
     seats:     p.seats,
     candidate: p.candidate ?? null,
   }))
- 
+
   if (rest.length > 0) {
     const otrosValue = rest.reduce((s, p) => s + getValue(p), 0)
     const otrosRounded = metric === 'pct'
@@ -199,12 +199,12 @@ export default function ElectionChart({ parties: inputParties, electionType, tur
       candidate: null,
     })
   }
- 
+
   const barHeight   = isPresidential ? 20 : 18
   const barGap      = isPresidential ? 12 : 10
   const yAxisWidth  = isPresidential ? 130 : 100
   const chartHeight = chartData.length * (barHeight + barGap) + 16
- 
+
   const renderTick = (props: { x: number | string; y: number | string; payload: { value: string } }) => (
     <YAxisTick
       x={Number(props.x)}
@@ -214,27 +214,28 @@ export default function ElectionChart({ parties: inputParties, electionType, tur
       isPresidential={isPresidential}
     />
   )
- 
+
   // ── Custom label: inside dark bars, outside light bars ───────────────────────
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const renderLabel = (props: {
     x?: number | string; y?: number | string; width?: number | string; height?: number | string
-    value?: number; index?: number
+    value?: any; index?: number
   }) => {
     const { x = 0, y = 0, width = 0, height = 0, value, index } = props
     const nx = Number(x), ny = Number(y), nw = Number(width), nh = Number(height)
-    if (value === undefined || index === undefined) return <g />
+    if (value == null || typeof value !== 'number' || index === undefined) return <g />
     const entry = chartData[index]
     if (!entry) return <g />
- 
+
     const text = formatLabel(value, metric)
     const lum = getLuminance(entry.colorHex)
     const inside = lum <= 0.6 && nw > 40
- 
+
     const cx = inside ? nx + nw - 8 : nx + nw + 4
     const textAnchor = inside ? 'end' : 'start'
     const fill = inside ? '#FBF8F1' : 'var(--ink)'
     const cy = ny + nh / 2 + 1
- 
+
     return (
       <text
         x={cx}
@@ -251,7 +252,7 @@ export default function ElectionChart({ parties: inputParties, electionType, tur
       </text>
     )
   }
- 
+
   const S = {
     footer: {
       display: 'flex',
@@ -267,7 +268,7 @@ export default function ElectionChart({ parties: inputParties, electionType, tur
       textDecoration: 'underline',
     },
   }
- 
+
   return (
     <div style={{ width: '100%' }} aria-label={`Gráfico de resultados electorales — ${unitLabel(metric)}`}>
       <ResponsiveContainer width="100%" height={chartHeight}>
@@ -307,7 +308,7 @@ export default function ElectionChart({ parties: inputParties, electionType, tur
           </Bar>
         </BarChart>
       </ResponsiveContainer>
- 
+
       {(turnout != null || wikipediaUrl) && (
         <div style={S.footer}>
           {turnout != null ? (
@@ -328,4 +329,3 @@ export default function ElectionChart({ parties: inputParties, electionType, tur
     </div>
   )
 }
- 
