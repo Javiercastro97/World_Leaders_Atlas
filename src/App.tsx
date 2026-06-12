@@ -39,7 +39,10 @@ export default function App() {
   }, [])
 
   return (
-    <div style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden' }}>
+    <div
+      style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden' }}
+      data-panel-open={selectedId !== null ? 'true' : 'false'}
+    >
       <Masthead />
       <WorldMap selectedId={selectedId} onSelect={handleSelect} />
       <SearchBar onSelect={handleSelect} />

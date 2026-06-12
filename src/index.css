@@ -227,6 +227,23 @@ body::before {
   animation: searchFadeIn 220ms cubic-bezier(0.25, 0.1, 0.25, 1) both;
 }
 
+/* ── R2.3: Cinematic zoom — camera animates on country select/deselect ──── */
+
+/* Transition fires when React updates center/zoom controlled props. */
+.rsm-zoomable-group {
+  transition: transform 800ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* During user pan/pinch: disable transition so gestures feel instantaneous.
+   Class is added imperatively in onMoveStart and removed in onMoveEnd rAF. */
+.is-panning .rsm-zoomable-group {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rsm-zoomable-group { transition: none !important; }
+}
+
 /* ── Bar chart labels ───────────────────────────────────────────────────── */
 
 @keyframes barLabelIn {
@@ -246,23 +263,32 @@ body::before {
 
 @media (max-width: 720px) {
 
-  /* Masthead — padding reducido en móvil */
+  /* Masthead — padding reducido en móvil; transición para fade al abrir panel */
   .masthead {
     padding: 14px 16px;
+    transition: opacity 200ms ease;
   }
 
-  /* SearchBar — full width con márgenes laterales */
+  /* SearchBar — full width con márgenes laterales; transición para fade al abrir panel */
   [role="search"] {
     top: 90px !important;
     left: 16px !important;
     right: 16px !important;
     width: auto !important;
+    transition: opacity 200ms ease;
+  }
+
+  /* Ocultar masthead y search cuando el panel está abierto en móvil */
+  [data-panel-open="true"] .masthead,
+  [data-panel-open="true"] [role="search"] {
+    opacity: 0;
+    pointer-events: none;
   }
 
   /* Panel — bottom sheet. Transform controlado desde JS (snap state). */
   .panel-overlay {
     width: 100%;
-    height: 90vh;
+    height: 86vh;
     top: auto;
     bottom: 0;
     left: 0;
