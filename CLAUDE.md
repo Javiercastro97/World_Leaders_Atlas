@@ -38,11 +38,28 @@ Atlas político mundial interactivo con datos en vivo de Wikidata: mapa mundi cl
   - **Refactor `parsePairs` + `splitInlineFields`**: manejo de múltiples campos en una misma línea del infobox (formato India 2024: `|partido1=[[BJP]] |líder1=[[Narendra Modi]]`). Retrocompatible — todos los países previos sin cambio.
   - **Líderes parlamentarios en tooltip**: `parseFichaDeEleccion` añade `líder${n}` como fallback; `parseInfoboxElection` añade `leader${n}`. En elecciones no presidenciales, el campo `candidate` (ahora = líder del partido) aparece como tercera línea sutil en el tooltip (no en el eje Y).
 
+- **Paso 10** — Deploy a Vercel. Atlas en producción. Auto-deploy configurado: push a `main` → Vercel rebuild automático.
+
+- **Rediseño Dirección A** — Bloques visuales completados y fusionados a main:
+  - **R1** — Bandera en el header del panel: `<img>` desde Wikidata P41 (URL directa, sin proxy), tamaño 28×21px, borde hairline `1px solid var(--rule)`. Fallback silencioso si P41 no existe. Fuente de la URL: SPARQL junto al resto de los datos del país.
+  - **R2.1** — Retícula cartográfica: `<Sphere>` y `<Graticule>` de react-simple-maps, stroke `var(--rule)`, strokeWidth 0.5/0.4. Dibuja el contorno Equal Earth y los meridianos/paralelos como textura editorial sutil.
+  - **R2.2** — Hover refinado: transición `fill/stroke/stroke-width 180ms ease-out` en ambos estados (`default` y `hover`) para que la animación funcione en ambas direcciones. Hover añade `stroke: ink3 (#6B6660)` y `strokeWidth: 0.6` — más sutil que el seleccionado (1.5px / ink).
+  - **R2.3** — Zoom cinematográfico: ZoomableGroup con `center`/`zoom` como estado controlado (`camera: { center, zoom }`). `computeCamera` calcula centroide (`geoCentroid`) y zoom por bounding box (`calcZoom`). Viajes: país→país directo, cierre→mapamundi. `is-panning` con DOM imperativo (sin lag). CSS `transition: transform 800ms` en `.rsm-zoomable-group`, desactivado durante gestos. Offset móvil: `latOffset = min(25, 61.5/zoom)`. Fallback sin zoom para países fuera del TopoJSON (Andorra, Bahréin). SearchBar dispara el mismo `useEffect`. `prefers-reduced-motion` override.
+  - **Fix móvil producción** — Masthead y SearchBar con fade-out (`opacity: 0; pointer-events: none`) cuando el panel está abierto en móvil, controlado por `data-panel-open` en el div raíz de App.tsx. Snap FULL del bottom sheet `90vh → 86vh`.
+
 ### Siguiente
-- **Paso 10** — Deploy a Vercel.
+- **Rediseño R3** — Coreografía del panel: crossfade entre países, animación de entrada/salida de secciones.
+- **Rediseño R4** — Modo oscuro (opcional, baja prioridad).
+
+### Roadmap de features (aprobado, sin orden fijo)
+- **OG image + deep linking**: compartir URL de un país directamente (ej. `/country/Q29`).
+- **B1 — Próximas elecciones**: fecha de la siguiente elección programada desde Wikidata.
+- **B2 — Comparador de países**: panel lateral con dos países en paralelo.
+- **B5 — Organizaciones internacionales**: pertenencia a ONU, UE, OTAN, etc.
+- **B7 — Coloreado ideológico del mapa**: requiere taxonomía de ideologías aprobada por Javier antes de implementar.
 
 ### Pendientes (orden del BRIEF.md)
-10. Build para deploy
+— Todo el BRIEF.md original completado. Ver Roadmap arriba para próximas features.
 
 ## Arquitectura clave
 
@@ -99,7 +116,7 @@ Atlas político mundial interactivo con datos en vivo de Wikidata: mapa mundi cl
 
 - **`useIsMobile` hook** (`src/hooks/useIsMobile.ts`): `window.matchMedia('(max-width: 720px)')` con listener `change`. Valor inicial sincrónico en `useState` initializer para evitar flash de layout incorrecto.
 
-- **Bottom sheet (panel en móvil)**: CSS `.panel-overlay` con `position: fixed; bottom: 0; width: 100%; height: 90vh; border-radius: 8px 8px 0 0`. Transform controlado desde JS (no CSS animation) — la razón es que `animation-fill-mode: both` entra en conflicto con `style.transform` inline: ambos compiten por la misma propiedad. Fuente única de verdad: estado React + refs.
+- **Bottom sheet (panel en móvil)**: CSS `.panel-overlay` con `position: fixed; bottom: 0; width: 100%; height: 86vh; border-radius: 8px 8px 0 0`. (Era 90vh; bajado a 86vh para dejar franja libre visible y alejar el botón X de la zona de gestos del sistema.) Transform controlado desde JS (no CSS animation) — la razón es que `animation-fill-mode: both` entra en conflicto con `style.transform` inline: ambos compiten por la misma propiedad. Fuente única de verdad: estado React + refs.
 
 - **Snap state**: `snapPoint: 'full' | 'peek'`. `'full'` → `translateY(0)`, `'peek'` → `translateY(50vh)`. La transición CSS `transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1)` en `.panel-overlay` anima el snapping. Durante drag se suprime con `panelEl.style.transition = 'none'` para respuesta inmediata.
 
@@ -114,6 +131,27 @@ Atlas político mundial interactivo con datos en vivo de Wikidata: mapa mundi cl
 - **`touch-action: none` en WorldMap**: Añadido al `div` contenedor del mapa (`src/components/WorldMap.tsx`). Cede el control de gestos táctiles al d3-zoom nativo (que tiene implementación completa de pinch y pan). Sin este CSS, el navegador roba los eventos táctiles antes de que d3 pueda procesarlos.
 
 - **Masthead selector**: `className="masthead"` en App.tsx + `.masthead` en index.css. El selector estructural frágil fue eliminado en el Paso 9.
+
+### Zoom cinematográfico — R2.3 (arquitectura)
+
+- **ZoomableGroup controlado**: `center: [lon, lat]` y `zoom: number` como estado React único (`camera: { center, zoom }`). Cuando las props cambian, `useZoomPan` interno llama `svg.call(zoom.transform, newPos)` de forma inmediata → el CSS `transition: transform 800ms` en `.rsm-zoomable-group` anima el viaje.
+
+- **`computeCamera(selectedId, geos, isMobile)`**: función pura que devuelve `Camera | null`. `null` si el país no está en el TopoJSON (Andorra, Bahréin) — el panel abre sin zoom. Usa `geoCentroid` para el centroide y `calcZoom` para el nivel basado en el bounding box (geoBounds, spans > 100° → 1.9, > 60° → 2.7, > 30° → 3.7, > 15° → 4.7, resto → 5.5).
+
+- **Offset móvil**: cuando `isMobile`, desplaza el centro al sur: `latOffset = min(25°, 61.5/zoom)`. El país queda en la franja visible sobre el bottom sheet de 86vh. Derivado de la geometría del viewport (visible strip = 14vh, centro en 7%).
+
+- **Gestos sin lag** (`is-panning`): `onMoveStart` → `classList.add('is-panning')` (imperativo, sin React state). `onMoveEnd` → `setCamera(coords)` + `requestAnimationFrame(() => classList.remove('is-panning'))`. El CSS `.is-panning .rsm-zoomable-group { transition: none }` elimina el lag en gestos táctiles y de ratón.
+
+- **Viajes**: país→país (selectedId cambia directamente), cierre→mapamundi (selectedId=null → INITIAL_CENTER [0,0], INITIAL_ZOOM 1). SearchBar usa la misma ruta (mismo `handleSelect` → mismo `selectedId` → mismo `useEffect`).
+
+- **`prefers-reduced-motion`**: `.rsm-zoomable-group { transition: none !important }` en el bloque reduced-motion de index.css.
+
+### Flujo de trabajo de rediseño
+
+- Bloques visuales grandes (R1, R2, R3…) se trabajan en local, se validan con Javier en `npm run dev`, y se fusionan a `main` cuando el bloque está aprobado.
+- Push a `main` = producción automática vía Vercel.
+- NO hacer push sin validación visual de Javier (esto aplica siempre, no solo al rediseño).
+- Rama `redesign` puede crearse para trabajo especulativo o experimental. En la práctica, los bloques R1/R2 se hicieron directamente en `main` como cambios sin commitear hasta aprobación.
 
 ### ElectionChart — props y Recharts v3
 - Props: `{ parties: ElectionParty[], electionType: ElectionTypeToShow }`. No recibe `ElectionData` completo.
