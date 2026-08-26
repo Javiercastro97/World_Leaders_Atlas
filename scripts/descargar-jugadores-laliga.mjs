@@ -1,8 +1,12 @@
 /**
  * Descarga los PNG (fondo transparente) de todos los jugadores de LaLiga EA Sports.
  *
- * Uso:
- *   node scripts/descargar-jugadores-laliga.mjs
+ * Uso: colócate en la carpeta donde quieras los PNG y lanza
+ *
+ *   node <ruta-a-este-fichero>
+ *
+ * La carpeta jugadores-laliga/ se crea en el directorio actual, así que da
+ * igual dónde guardes este fichero.
  *
  * No necesita instalar nada: solo Node 18 o superior.
  *
@@ -18,10 +22,10 @@
 import { mkdir, writeFile, readdir, stat } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
-const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const DESTINO = path.join(RAIZ, 'jugadores-laliga');
+// La carpeta se crea donde estés parado al lanzarlo (no donde viva este
+// fichero), para que dé igual desde dónde lo ejecutes.
+const DESTINO = path.resolve(process.cwd(), 'jugadores-laliga');
 
 // La API ha ido cambiando de dominio con los años. Se prueban en orden
 // y se usa el primero que conteste con una lista de jugadores válida.

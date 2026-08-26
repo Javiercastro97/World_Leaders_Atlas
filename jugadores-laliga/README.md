@@ -5,11 +5,14 @@ de Primera División.
 
 ## Cómo llenarla
 
-Desde la raíz del proyecto:
+Colócate en la carpeta donde quieras los PNG y lanza el script:
 
 ```
 node scripts/descargar-jugadores-laliga.mjs
 ```
+
+La carpeta `jugadores-laliga/` se crea en el **directorio actual**, no junto
+al script, así que da igual desde dónde lo ejecutes o dónde guardes el fichero.
 
 No hay que instalar nada: solo Node 18 o superior. Tarda un par de minutos.
 
