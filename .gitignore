@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# PNG de jugadores de LaLiga: se generan en local con
+# scripts/descargar-jugadores-laliga.mjs (varios cientos de binarios)
+jugadores-laliga/**/*.png
+jugadores-laliga/indice.json
