@@ -1,6 +1,0 @@
-{
-  "$comment": "Serie principal por métrica: lista de datasets por prioridad. Se usa el PRIMERO que tenga datos. Nunca se suman datasets distintos. Ver DATA_SOURCES.md antes de cambiarlo.",
-  "lanzamientos_practicados": ["cgpj-efecto-crisis"],
-  "lanzamientos_suspendidos": ["cgpj-lanzamientos-suspendidos-scpg"],
-  "poblacion": ["ine-poblacion"]
-}

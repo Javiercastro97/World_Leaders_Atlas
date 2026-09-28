@@ -2,8 +2,6 @@
 
 ## Lo que es este proyecto
 
-> El subdirectorio `vivienda/` es un proyecto **independiente** (Mapa por la Vivienda, Next.js). Tiene su propio `vivienda/CLAUDE.md`. No forma parte del Atlas ni de su despliegue en Vercel.
-
 Atlas político mundial interactivo con datos en vivo de Wikidata: mapa mundi clicable → panel lateral con jefe de gobierno/estado, foto, partido, y gráfico de últimas elecciones. Estética de periodismo de datos (FT, Economist, NYT Interactive) — no dashboard SaaS.
 
 ## Cómo trabajar con Javier
