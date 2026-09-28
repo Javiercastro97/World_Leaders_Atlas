@@ -1,0 +1,328 @@
+{
+  "id": "ep01",
+  "title": "EL BOTÓN",
+  "character": "Felipe VI (versión ficticia y caricaturesca)",
+  "duration": 41.0,
+  "output": "pensamientos_intrusivos_ep01.mp4",
+  "disclaimer": "PARODIA · FICCIÓN",
+  "subtitleY": 520,
+  "mix": { "VOICE": 0.85, "AMBIENCE": 0.32, "FOLEY": 0.75, "COMEDY_SFX": 0.95, "MUSIC": 0.6 },
+
+  "tracks": [
+    { "sound": "room_tone", "at": 0, "until": 22.6, "bus": "AMBIENCE", "loop": true },
+    { "sound": "speech_murmur", "at": 0, "until": 22.6, "bus": "AMBIENCE", "loop": true, "volume": 0.75 },
+    { "sound": "room_tone", "at": 24.5, "until": 27.8, "bus": "AMBIENCE", "loop": true },
+    { "sound": "speech_murmur", "at": 24.6, "until": 27.8, "bus": "AMBIENCE", "loop": true, "volume": 0.75, "trimStart": 2.0 },
+    { "sound": "alarm", "at": 28.4, "until": 34.4, "bus": "COMEDY_SFX", "loop": true, "volume": 0.45 },
+    { "sound": "alarm", "at": 34.4, "until": 37.4, "bus": "COMEDY_SFX", "loop": true, "volume": 0.2 }
+  ],
+
+  "scenes": [
+    {
+      "id": "01_normalidad",
+      "note": "NORMALIDAD. Acto solemne. Primer 'No.' sin explicar por qué: curiosidad.",
+      "start": 0, "end": 3.2,
+      "background": { "set": "ceremony_hall", "props": { "speakerPose": "talk" } },
+      "camera": [
+        { "move": "POV_MICRO_SHAKE", "amount": 2 },
+        { "move": "POV_LOOK_DOWN", "at": 1.9, "amount": 70, "dur": 0.1, "steps": 1 }
+      ],
+      "props": [{ "id": "button", "asset": "red_button", "x": 560, "y": 1330 }],
+      "hands": [
+        { "side": "left", "x": 290, "y": 1990, "rot": 10, "scale": 0.9, "pose": "rest" },
+        { "side": "right", "x": 790, "y": 1990, "rot": -9, "scale": 0.9, "pose": "rest" }
+      ],
+      "doodles": [
+        { "type": "DOODLE_ARROW", "at": 0.0, "until": 1.9, "x": 520, "y": 1560, "to": [400, 1690], "text": "YO", "size": 90, "draw": 0.2, "space": "screen" },
+        { "type": "DOODLE_CIRCLE", "at": 2.0, "x": 560, "y": 1290, "w": 360, "h": 300, "draw": 0.3, "space": "world" }
+      ],
+      "subtitle": [{ "text": "No.", "at": 0.7, "until": 3.2 }],
+      "sfx": [{ "sound": "cough", "at": 1.5, "bus": "FOLEY", "volume": 0.35 }]
+    },
+    {
+      "id": "02_zoom_boton",
+      "note": "PENSAMIENTO. Zoom seco al botón.",
+      "start": 3.2, "end": 5.6,
+      "background": { "set": "ceremony_hall", "props": { "speakerPose": "talk" } },
+      "camera": [
+        { "move": "POV_SNAP_ZOOM", "target": [560, 1300], "zoom": 3.0 },
+        { "move": "POV_MICRO_SHAKE", "amount": 4 }
+      ],
+      "props": [{ "id": "button", "asset": "red_button", "x": 560, "y": 1330 }],
+      "hands": [{ "side": "right", "x": 790, "y": 1990, "rot": -9, "scale": 0.9, "pose": "rest" }],
+      "doodles": [{ "type": "DOODLE_CIRCLE", "at": 0.9, "x": 560, "y": 1290, "w": 380, "h": 320, "draw": 0.2, "space": "world" }],
+      "subtitle": [{ "text": "Ni se te ocurra.", "at": 0.3, "until": 2.4, "words": { "ocurra": "shake" } }],
+      "sfx": [{ "sound": "dramatic_hit", "at": 0, "volume": 0.45 }]
+    },
+    {
+      "id": "03_resistencia",
+      "note": "RESISTENCIA. La mano derecha avanza sola, a saltos, mientras él se regaña.",
+      "start": 5.6, "end": 11.8,
+      "background": { "set": "ceremony_hall", "props": { "speakerPose": "talk" } },
+      "camera": [
+        { "move": "POV_MICRO_SHAKE", "amount": 2 },
+        { "move": "POV_LOOK_DOWN", "at": 0.3, "amount": 80, "dur": 0.1, "steps": 1 }
+      ],
+      "props": [{ "id": "button", "asset": "red_button", "x": 560, "y": 1330 }],
+      "hands": [
+        { "side": "left", "x": 290, "y": 1990, "rot": 10, "scale": 0.9, "pose": "rest" },
+        {
+          "side": "right", "x": 790, "y": 1990, "rot": -9, "scale": 0.9, "pose": "rest",
+          "keys": [
+            { "t": 0.6, "x": 760, "y": 1920, "rot": -6, "pose": "point" },
+            { "t": 1.5, "x": 730, "y": 1850 },
+            { "t": 2.7, "x": 700, "y": 1780, "rot": -4 },
+            { "t": 4.0, "x": 680, "y": 1720, "rot": -3 }
+          ]
+        }
+      ],
+      "subtitle": [
+        { "text": "Felipe.", "at": 0.3, "until": 1.5 },
+        { "text": "Tienes cincuenta y pico años.", "at": 1.7, "until": 3.7 },
+        { "text": "Eres el rey de España.", "at": 3.9, "until": 6.2, "words": { "rey": ["grow", "arrow"] } }
+      ],
+      "sfx": [{ "sound": "bad_applause", "at": 4.6, "until": 5.8, "bus": "FOLEY", "volume": 0.3 }]
+    },
+    {
+      "id": "04_retroceso",
+      "note": "La mano se retira de golpe y se pone a tamborilear. Silencio incómodo.",
+      "start": 11.8, "end": 13.6,
+      "background": { "set": "ceremony_hall", "props": { "speakerPose": "talk" } },
+      "camera": [{ "move": "POV_MICRO_SHAKE", "amount": 2 }],
+      "props": [{ "id": "button", "asset": "red_button", "x": 560, "y": 1330 }],
+      "hands": [
+        { "side": "left", "x": 290, "y": 1990, "rot": 10, "scale": 0.9, "pose": "rest" },
+        {
+          "side": "right", "x": 680, "y": 1720, "rot": -3, "scale": 0.9, "pose": "point",
+          "keys": [
+            { "t": 0.07, "x": 740, "y": 1860, "pose": "grab" },
+            { "t": 0.14, "x": 790, "y": 1990, "rot": -9, "pose": "rest" },
+            { "t": 0.7, "pose": "nervous" }
+          ]
+        }
+      ],
+      "sfx": [
+        { "sound": "whoosh_cheap", "at": 0, "volume": 0.5 },
+        { "sound": "click", "at": 0.8, "bus": "FOLEY", "volume": 0.15 },
+        { "sound": "click", "at": 0.93, "bus": "FOLEY", "volume": 0.15 },
+        { "sound": "click", "at": 1.07, "bus": "FOLEY", "volume": 0.15 },
+        { "sound": "click", "at": 1.34, "bus": "FOLEY", "volume": 0.15 },
+        { "sound": "click", "at": 1.47, "bus": "FOLEY", "volume": 0.15 }
+      ]
+    },
+    {
+      "id": "05_que_hara",
+      "note": "TENTACIÓN. Zoom ridículo. El botón se vuelve sagrado.",
+      "start": 13.6, "end": 16.4,
+      "background": { "set": "ceremony_hall", "props": { "speakerPose": "talk" } },
+      "camera": [
+        { "move": "POV_SNAP_ZOOM", "target": [560, 1240], "zoom": 6.5, "dur": 0.1, "steps": 2 },
+        { "move": "POV_MICRO_SHAKE", "amount": 5 }
+      ],
+      "props": [{ "id": "button", "asset": "red_button", "x": 560, "y": 1330 }],
+      "doodles": [
+        { "type": "DOODLE_HALO", "at": 0.35, "x": 560, "y": 1162, "w": 150, "draw": 0.15, "space": "world" },
+        { "type": "DOODLE_QUESTION", "at": 1.2, "x": 540, "y": 760, "w": 300, "size": 200, "draw": 0.4, "space": "screen" }
+      ],
+      "subtitle": [{ "text": "¿Pero qué hará?", "at": 0.5, "until": 2.8, "y": 1480, "words": { "hará": "tilt" } }],
+      "sfx": [
+        { "sound": "angel_choir", "at": 0.05, "until": 2.8, "bus": "MUSIC", "volume": 0.9 },
+        { "sound": "tiny_pop", "at": 1.2 }
+      ]
+    },
+    {
+      "id": "06_pulsame",
+      "note": "El pensamiento pinta encima de la realidad.",
+      "start": 16.4, "end": 18.4,
+      "background": { "set": "ceremony_hall", "props": { "speakerPose": "talk" } },
+      "camera": [
+        { "move": "POV_SNAP_ZOOM", "target": [560, 1170], "zoom": 4 },
+        { "move": "POV_MICRO_SHAKE", "amount": 4 }
+      ],
+      "props": [{ "id": "button", "asset": "red_button", "x": 560, "y": 1330 }],
+      "doodles": [
+        { "type": "DOODLE_TEXT", "text": "PÚLSAME", "at": 0.1, "x": 520, "y": 640, "size": 150, "draw": 0.4, "color": "#d0241c", "rot": -6, "space": "screen" },
+        { "type": "DOODLE_ARROW", "at": 0.6, "x": 760, "y": 720, "to": [610, 1020], "draw": 0.15, "color": "#d0241c", "space": "screen" },
+        { "type": "DOODLE_EYES", "at": 0.9, "x": 560, "y": 1215, "w": 100, "h": 60, "space": "world" },
+        { "type": "DOODLE_DEVIL", "at": 1.3, "x": 225, "y": 1020, "w": 170, "space": "screen" }
+      ],
+      "sfx": [
+        { "sound": "paper", "at": 0.1, "volume": 0.5 },
+        { "sound": "tiny_pop", "at": 0.9 },
+        { "sound": "tiny_pop", "at": 1.3, "rate": 0.8 }
+      ]
+    },
+    {
+      "id": "07_no_no_NO",
+      "note": "ACCIÓN. La mano vuelve. La izquierda intenta frenarla. Escalada de NOs.",
+      "start": 18.4, "end": 22.6,
+      "background": { "set": "ceremony_hall", "props": { "speakerPose": "talk" } },
+      "camera": [
+        { "move": "POV_MICRO_SHAKE", "amount": 2, "until": 2.4 },
+        { "move": "POV_SLOW_APPROACH", "at": 2.4, "dur": 1.2, "zoom": 1.35, "target": [600, 1400], "steps": 4 },
+        { "move": "POV_PANIC", "at": 2.4, "until": 3.5, "amount": 7 }
+      ],
+      "props": [{ "id": "button", "asset": "red_button", "x": 560, "y": 1330 }],
+      "hands": [
+        {
+          "side": "right", "x": 790, "y": 1990, "rot": -9, "scale": 0.9, "pose": "rest", "tremble": 3,
+          "keys": [
+            { "t": 0.3, "x": 740, "y": 1880, "rot": -6, "pose": "point" },
+            { "t": 1.3, "x": 700, "y": 1780, "rot": -4 },
+            { "t": 2.4, "x": 670, "y": 1690, "rot": -2 },
+            { "t": 3.3, "x": 655, "y": 1640, "rot": -1 }
+          ]
+        },
+        {
+          "side": "left", "x": 290, "y": 1990, "rot": 10, "scale": 0.9, "pose": "rest",
+          "keys": [
+            { "t": 2.4, "x": 430, "y": 1860, "rot": 45, "pose": "grab" },
+            { "t": 2.5, "x": 470, "y": 1830, "rot": 62 }
+          ]
+        }
+      ],
+      "subtitle": [
+        { "text": "No.", "at": 0.3, "until": 1.2, "size": 78 },
+        { "text": "No.", "at": 1.3, "until": 2.3, "size": 100 },
+        { "text": "NO.", "at": 2.4, "until": 3.7, "size": 150, "words": { "NO": "shake" } }
+      ]
+    },
+    {
+      "id": "08_click",
+      "note": "CLICK. Congelado. SILENCIO TOTAL: el silencio es el chiste.",
+      "start": 22.6, "end": 24.3,
+      "background": { "set": "ceremony_hall", "props": { "speakerPose": "stare" } },
+      "camera": [
+        { "move": "POV_SNAP_ZOOM", "target": [600, 1400], "zoom": 1.35 },
+        { "move": "POV_FREEZE", "at": 0.1, "until": 1.7 }
+      ],
+      "props": [{ "id": "button", "asset": "red_button", "x": 560, "y": 1330, "pose": "pressed" }],
+      "animations": [{ "target": "button", "preset": "squash", "at": 0, "amount": 0.15 }],
+      "hands": [
+        { "side": "right", "x": 635, "y": 1545, "rot": 0, "scale": 0.9, "pose": "press" },
+        { "side": "left", "x": 470, "y": 1830, "rot": 62, "scale": 0.9, "pose": "grab" }
+      ],
+      "sfx": [{ "sound": "click", "at": 0, "volume": 1 }]
+    },
+    {
+      "id": "09_ves",
+      "note": "No pasa nada. Alivio. Aureola de inocencia. Se deja respirar.",
+      "start": 24.3, "end": 27.8,
+      "background": { "set": "ceremony_hall", "props": { "speakerPose": "talk" } },
+      "camera": [
+        { "move": "POV_SNAP_ZOOM", "target": [600, 1400], "zoom": 1.35 },
+        { "move": "POV_MICRO_SHAKE", "amount": 2 }
+      ],
+      "props": [{ "id": "button", "asset": "red_button", "x": 560, "y": 1330, "pose": "pressed" }],
+      "hands": [
+        { "side": "right", "x": 635, "y": 1545, "rot": 0, "scale": 0.9, "pose": "press" },
+        { "side": "left", "x": 470, "y": 1830, "rot": 62, "scale": 0.9, "pose": "grab" }
+      ],
+      "doodles": [{ "type": "DOODLE_HALO", "at": 1.6, "x": 610, "y": 1150, "w": 190, "draw": 0.15, "space": "world" }],
+      "subtitle": [
+        { "text": "¿Ves?", "at": 0.3, "until": 1.4 },
+        { "text": "No hacía nada.", "at": 1.5, "until": 3.2 }
+      ],
+      "sfx": [{ "sound": "tiny_pop", "at": 1.6, "volume": 0.6 }]
+    },
+    {
+      "id": "10_clonk",
+      "note": "ESCALADA ABSURDA. Apagón, alarma, cosas que caen, grito fuera de campo.",
+      "start": 27.8, "end": 32.4,
+      "background": {
+        "set": "ceremony_hall",
+        "props": { "speakerPose": "shock", "leftPose": "shock", "rightPose": "shock" },
+        "lighting": [
+          { "t": 0, "level": 1 }, { "t": 0.08, "level": 0.1 }, { "t": 0.2, "level": 0.7 },
+          { "t": 0.27, "level": 0.05 }, { "t": 0.4, "level": 0.5 }, { "t": 0.47, "level": 0.28 }
+        ],
+        "alarm": { "at": 0.6, "period": 0.5 }
+      },
+      "camera": [
+        { "move": "POV_PANIC", "at": 0, "until": 1.1, "amount": 26 },
+        { "move": "POV_LOOK_LEFT", "at": 1.2, "amount": 240, "dur": 0.1, "steps": 1, "returnAt": 2.0 },
+        { "move": "POV_LOOK_RIGHT", "at": 2.2, "amount": 240, "dur": 0.1, "steps": 1, "returnAt": 2.9 },
+        { "move": "POV_MICRO_SHAKE", "at": 2.9, "amount": 5 }
+      ],
+      "props": [
+        { "id": "button", "asset": "red_button", "x": 560, "y": 1330, "pose": "pressed" },
+        { "id": "chandelier", "asset": "falling", "x": 420, "y": -150, "props": { "kind": "chandelier" }, "at": 1.0 },
+        { "id": "vase", "asset": "falling", "x": 1260, "y": 500, "props": { "kind": "vase" }, "at": 2.2 },
+        { "id": "portrait", "asset": "falling", "x": -150, "y": 300, "props": { "kind": "portrait" }, "at": 1.3 }
+      ],
+      "animations": [
+        { "target": "chandelier", "preset": "fall", "at": 1.0 },
+        { "target": "vase", "preset": "fall", "at": 2.2 },
+        { "target": "portrait", "preset": "fall", "at": 1.3 }
+      ],
+      "hands": [
+        { "side": "right", "x": 635, "y": 1545, "rot": 0, "scale": 0.9, "pose": "press" },
+        { "side": "left", "x": 470, "y": 1830, "rot": 62, "scale": 0.9, "pose": "grab" }
+      ],
+      "subtitle": [
+        { "text": "¿QUIÉN HA TOCADO ESO?", "at": 3.0, "until": 4.6, "style": "shout", "y": 820, "words": { "ESO": "shake" } }
+      ],
+      "sfx": [
+        { "sound": "clonk", "at": 0, "volume": 1 },
+        { "sound": "electrical_failure", "at": 0.05, "volume": 0.6 },
+        { "sound": "crash_distant", "at": 1.0, "bus": "FOLEY", "volume": 1 },
+        { "sound": "metal_clang", "at": 1.35, "bus": "FOLEY", "volume": 0.5 },
+        { "sound": "bonk", "at": 2.25, "bus": "FOLEY", "volume": 0.8 },
+        { "sound": "chair", "at": 2.4, "bus": "FOLEY", "volume": 0.8 },
+        { "sound": "footsteps", "at": 2.5, "bus": "FOLEY", "volume": 0.6 },
+        { "sound": "shout_who", "at": 3.0, "bus": "VOICE", "volume": 0.8 }
+      ]
+    },
+    {
+      "id": "11_ha_sido_leonor",
+      "note": "CONSECUENCIA + EXCUSA RIDÍCULA. Mira la mano, la retira muy despacio. Remate con espacio.",
+      "start": 32.4, "end": 37.4,
+      "background": {
+        "set": "ceremony_hall",
+        "props": { "speakerPose": "stare", "leftPose": "stare", "rightPose": "stare" },
+        "lighting": [{ "t": 0, "level": 0.28 }],
+        "alarm": { "at": 0, "period": 0.5 }
+      },
+      "camera": [
+        { "move": "POV_SLOW_APPROACH", "at": 0.1, "dur": 0.6, "zoom": 1.55, "target": [620, 1480], "steps": 3 },
+        { "move": "POV_MICRO_SHAKE", "amount": 2 }
+      ],
+      "props": [{ "id": "button", "asset": "red_button", "x": 560, "y": 1330, "pose": "pressed" }],
+      "hands": [
+        {
+          "side": "right", "x": 635, "y": 1545, "rot": 0, "scale": 0.9, "pose": "press",
+          "keys": [
+            { "t": 1.1, "x": 645, "y": 1580, "pose": "point" },
+            { "t": 1.6, "x": 670, "y": 1650, "rot": -2 },
+            { "t": 2.1, "x": 700, "y": 1740, "rot": -4, "pose": "rest" },
+            { "t": 2.6, "x": 740, "y": 1860, "rot": -6, "pose": "hide" },
+            { "t": 3.0, "x": 800, "y": 2250 }
+          ]
+        },
+        {
+          "side": "left", "x": 470, "y": 1830, "rot": 62, "scale": 0.9, "pose": "grab",
+          "keys": [{ "t": 2.2, "x": 290, "y": 2150, "rot": 10 }]
+        }
+      ],
+      "doodles": [
+        { "type": "DOODLE_SHAKE", "at": 1.1, "until": 2.6, "x": 690, "y": 1500, "w": 260, "h": 200, "draw": 0, "space": "world" },
+        { "type": "DOODLE_ARROW", "at": 4.0, "x": 380, "y": 1150, "to": [70, 1080], "draw": 0.12, "space": "screen" }
+      ],
+      "subtitle": [
+        { "text": "disimula…", "at": 1.2, "until": 2.6, "style": "whisper", "y": 780 },
+        { "text": "Ha sido Leonor.", "at": 3.3, "until": 5.0 }
+      ]
+    },
+    {
+      "id": "12_logo",
+      "note": "CORTE SECO. Trompeta real deliberadamente mala. Último frame = logo (el loop vuelve al 'No.').",
+      "start": 37.4, "end": 41.0,
+      "background": { "set": "paper" },
+      "camera": [{ "move": "POV_MICRO_SHAKE", "amount": 3 }],
+      "props": [
+        { "id": "logo", "asset": "series_logo", "x": 540, "y": 960, "props": { "lines": ["PENSAMIENTOS", "INTRUSIVOS"], "stamp": "EP.01 · EL BOTÓN" } }
+      ],
+      "sfx": [{ "sound": "cheap_trumpet", "at": 0.12, "bus": "MUSIC", "volume": 1.4 }]
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# ./render ep01_felipe_vi   → output/pensamientos_intrusivos_ep01.mp4
+cd "$(dirname "$0")" && [ -d node_modules ] || npm install --legacy-peer-deps
+exec node scripts/render.mjs "$@"

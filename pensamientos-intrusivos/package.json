@@ -1,0 +1,30 @@
+{
+  "name": "pensamientos-intrusivos",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Motor de vídeo vertical para la serie de parodia PENSAMIENTOS INTRUSIVOS",
+  "scripts": {
+    "studio": "remotion studio src/index.ts --public-dir=episodes",
+    "render": "node scripts/render.mjs",
+    "stills": "node scripts/render.mjs --stills",
+    "sfx": "node scripts/gen-sfx.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fontsource/archivo-black": "^5.3.0",
+    "@fontsource/permanent-marker": "^5.3.0",
+    "@remotion/bundler": "^4.0.529",
+    "@remotion/cli": "^4.0.529",
+    "@remotion/renderer": "^4.0.529",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "remotion": "^4.0.529"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.3",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "typescript": "5.9"
+  }
+}

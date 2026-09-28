@@ -61,6 +61,9 @@ Atlas político mundial interactivo con datos en vivo de Wikidata: mapa mundi cl
 ### Pendientes (orden del BRIEF.md)
 — Todo el BRIEF.md original completado. Ver Roadmap arriba para próximas features.
 
+## Subproyecto: PENSAMIENTOS INTRUSIVOS
+- Carpeta `pensamientos-intrusivos/`: motor de vídeo vertical (Remotion) para una serie de parodia. Es independiente del Atlas: tiene su propio package.json y su propio CLAUDE.md, y el eslint raíz la ignora. No afecta al deploy de Vercel.
+
 ## Arquitectura clave
 
 ### Resolución de colores de partido

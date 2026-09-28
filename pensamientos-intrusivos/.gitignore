@@ -1,0 +1,4 @@
+node_modules
+output/
+episodes/*/generated/*
+!episodes/*/generated/.gitkeep
