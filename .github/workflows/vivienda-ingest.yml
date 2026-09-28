@@ -1,0 +1,66 @@
+name: vivienda · ingestión de datos
+
+# Descarga CGPJ e INE, guarda snapshots brutos con hash y abre un PR para revisión humana.
+# Nunca publica datos sin revisar: el PR es la puerta.
+on:
+  schedule:
+    - cron: "17 6 * * 1" # lunes 06:17 UTC
+  workflow_dispatch:
+    inputs:
+      discover:
+        description: "Generar solo el informe de descubrimiento de tablas del CGPJ"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+defaults:
+  run:
+    working-directory: vivienda
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: vivienda/package-lock.json
+      - run: npm ci
+      - name: Descubrimiento CGPJ
+        if: ${{ inputs.discover }}
+        run: npm run ingest:cgpj:discover
+        env:
+          CGPJ_PXWEB_BASE: ${{ vars.CGPJ_PXWEB_BASE }}
+      - name: CGPJ
+        if: ${{ !inputs.discover }}
+        continue-on-error: true
+        run: npm run ingest:cgpj
+        env:
+          CGPJ_PXWEB_BASE: ${{ vars.CGPJ_PXWEB_BASE }}
+      - name: INE
+        if: ${{ !inputs.discover }}
+        continue-on-error: true
+        run: npm run ingest:ine
+      - name: Transcripciones manuales
+        if: ${{ !inputs.discover }}
+        run: npm run ingest:manual
+      - name: Abrir PR si hay cambios
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -z "$(git status --porcelain -- data)" ]; then echo "Sin cambios"; exit 0; fi
+          branch="datos/ingesta-$(date -u +%Y%m%d-%H%M)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add data
+          git commit -m "datos: ingesta automática $(date -u +%F)"
+          git push origin "$branch"
+          body="Snapshot automático. Revisa report.json de cada snapshot (avisos de normalización) y compara con la fuente antes de fusionar."
+          gh pr create --title "Datos: ingesta $(date -u +%F)" --body "$body" --base "${{ github.event.repository.default_branch }}" --head "$branch"
+
